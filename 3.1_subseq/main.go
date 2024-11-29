@@ -22,7 +22,7 @@ func solve(a []int) int {
 
 	for i := 1; i < len(a); i++ {
 		for j := 0; j < i; j++ {
-			if a[i] <= a[j] {
+			if a[j] >= a[i] {
 				continue
 			}
 

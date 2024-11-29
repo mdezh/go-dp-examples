@@ -9,11 +9,7 @@ import (
 // получается из последовательности удалением 0 или больше ее элементов).
 
 func solve(a []int) []int {
-	if len(a) == 0 {
-		return nil
-	}
-
-	if len(a) == 1 {
+	if len(a) < 2 {
 		return a
 	}
 
@@ -30,7 +26,7 @@ func solve(a []int) []int {
 
 	for i := 1; i < len(a); i++ {
 		for j := 0; j < i; j++ {
-			if a[i] <= a[j] {
+			if a[j] >= a[i] {
 				continue
 			}
 

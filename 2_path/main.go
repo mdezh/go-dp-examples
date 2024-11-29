@@ -6,16 +6,12 @@ import "fmt"
 // длиной в одну клетку вправо или вниз. Посчитать, сколькими способами
 // можно попасть из левой верхней клетки в правую нижнюю.
 
-// 0 1 1
+// 1 1 1
 // 1 2 3
 // 1 3 6
 
 func solve(n, m int) int {
 	if n < 1 || m < 1 {
-		return 0
-	}
-
-	if n == 1 && m == 1 {
 		return 0
 	}
 
@@ -39,8 +35,32 @@ func solve(n, m int) int {
 	return a[n-1][m-1]
 }
 
+// Решение через комбинаторику, более эффективное
+func solveComb(n, m int) int {
+	if n < 1 || m < 1 {
+		return 0
+	}
+	return binominal(n+m-2, n-1)
+}
+
+// Расчет биноминального коэффициента (число сочетаний из n по k)
+// Функция взята из https://pkg.go.dev/gonum.org/v1/gonum/stat/combin#Binomial
+// (убраны проверки на валидность аргументов)
+func binominal(n, k int) int {
+	if k > n/2 {
+		k = n - k
+	}
+
+	b := 1
+	for i := 1; i <= k; i++ {
+		b = (n - k + i) * b / i
+	}
+
+	return b
+}
+
 func solveAndPrint(n, m int) {
-	fmt.Println(n, m, solve(n, m))
+	fmt.Println("n:", n, "m:", m, "dp:", solve(n, m), "binominal:", solveComb(n, m))
 }
 
 func main() {
@@ -58,4 +78,5 @@ func main() {
 	solveAndPrint(4, 4)
 	solveAndPrint(5, 5)
 	solveAndPrint(6, 6)
+	solveAndPrint(10, 10)
 }

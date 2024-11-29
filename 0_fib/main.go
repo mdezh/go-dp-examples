@@ -4,15 +4,17 @@ import "fmt"
 
 // Найти n-е число Фибоначчи
 
-func FibRec(n int) int {
+// наивное решение через рекурсию
+func fibRec(n int) int {
 	if n <= 2 {
 		return 1
 	}
 
-	return FibRec(n-2) + FibRec(n-1)
+	return fibRec(n-2) + fibRec(n-1)
 }
 
-func FibRecMemo(n int) int {
+// рекурсия с мемоизацией
+func fibRecMemo(n int) int {
 	memo := make([]int, n+1)
 
 	var fib func(int) int
@@ -31,7 +33,8 @@ func FibRecMemo(n int) int {
 	return fib(n)
 }
 
-func Fib(n int) int {
+// самое эффективное решение
+func fib(n int) int {
 	if n <= 2 {
 		return 1
 	}
@@ -48,8 +51,7 @@ func Fib(n int) int {
 func main() {
 	n := 45
 	fmt.Println(n)
-	fmt.Println(FibRec(n))
-	fmt.Println(FibRecMemo(n))
-	fmt.Println(Fib(n))
-
+	fmt.Println(fib(n))
+	fmt.Println(fibRecMemo(n))
+	fmt.Println(fibRec(n)) // при больших n (>40) будет заметная пауза
 }

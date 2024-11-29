@@ -32,5 +32,4 @@ func solve(n int) int {
 func main() {
 	n := 64
 	fmt.Println(n, solve(n))
-
 }

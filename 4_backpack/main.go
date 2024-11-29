@@ -15,7 +15,7 @@ import (
 //
 //          0    0    0    0    0
 // 5000(4)  0    0    0    0 5000
-// 3500(1)  0 3500 3500 3500 3500
+// 3500(1)  0 3500 3500 3500 5000
 // 2000(3)  0 3500 3500 3500 5500
 //
 // в другом порядке
@@ -24,18 +24,18 @@ import (
 // 2000(3)  0    0    0 2000 5000
 // 3500(1)  0 3500 3500 3500 5500
 
-var ErrNoVariants = errors.New("no variants")
-var ErrInvalidData = errors.New("invalid data")
+var (
+	errNoVariants  = errors.New("no variants")
+	errInvalidData = errors.New("invalid data")
+)
 
-func Solve(lc int, w, v []int) (int, error) {
+func solve(lc int, w, v []int) (int, error) {
 	if err := validate(lc, w, v); err != nil {
 		return 0, err
 	}
 
 	t := make([][]int, len(w)+1)
 	t[0] = make([]int, lc+1)
-
-	maxValue := 0
 
 	for i := 1; i <= len(w); i++ {
 		t[i] = make([]int, lc+1)
@@ -45,26 +45,25 @@ func Solve(lc int, w, v []int) (int, error) {
 			if w[i-1] <= j {
 				t[i][j] = max(t[i][j], t[i-1][j-w[i-1]]+v[i-1])
 			}
-
-			maxValue = max(maxValue, t[i][j])
 		}
 	}
 
-	if maxValue > 0 {
-		return maxValue, nil
+	res := t[len(w)][lc]
+	if res > 0 {
+		return res, nil
 	}
 
-	return 0, ErrNoVariants
+	return 0, errNoVariants
 }
 
 func validate(lc int, w, v []int) error {
 	if lc < 1 || len(w) < 1 || len(w) != len(v) {
-		return ErrInvalidData
+		return errInvalidData
 	}
 
 	for i := 0; i < len(w); i++ {
 		if w[i] < 1 || v[i] < 1 {
-			return ErrInvalidData
+			return errInvalidData
 		}
 	}
 
@@ -76,7 +75,7 @@ func solveAndPrint(lc int, w, v []int) {
 	fmt.Println("Weights:", w)
 	fmt.Println("Values:", v)
 
-	if res, err := Solve(lc, w, v); err != nil {
+	if res, err := solve(lc, w, v); err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Println(res)
